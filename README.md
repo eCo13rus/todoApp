@@ -23,7 +23,7 @@
 
 - PHP 8.0
 - Laravel
-- PostgreSQL
+- MySQL
 
 ## Требования к установке
 
