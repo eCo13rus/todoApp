@@ -7,7 +7,7 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-# В разработке
+# Проект в разработке
 
 **Task Manager** — это веб-приложение на Laravel, предназначенное для управления задачами с функционалом регистрации и аутентификации пользователей.
 
