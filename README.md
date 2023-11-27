@@ -30,3 +30,9 @@
 - PHP версии 8.0 или выше.
 - Composer.
 - Make.
+
+## Запуск
+
+- make composer
+
+- make start
