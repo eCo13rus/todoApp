@@ -34,3 +34,4 @@ Route::get('register', function () {
     return view('register.index');
 })->name('register');
 
+Route::resource('tasks', TaskController::class);

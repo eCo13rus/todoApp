@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -18,11 +19,22 @@ class LoginController extends Controller
             'password.required' => 'Пароль обязателен для заполнения',
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'), $request->has('remember'))) {
-            return redirect()->route('home');
-        } else {
-            return redirect()->back()->withInput()->with('error', 'Неверное имя или пароль');
+        // Проверить, существует ли пользователь с таким email
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return redirect()->back()->withInput()->withErrors([
+                'email' => 'Такого пользователя не существует.',
+            ]);
         }
+
+        if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
+            return redirect()->route('home');
+        }
+
+        return redirect()->back()->withInput()->withErrors([
+            'email' => 'Неверное имя пользователя или пароль.',
+        ]);
     }
 
     public function logout(Request $request)
