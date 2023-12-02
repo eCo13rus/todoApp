@@ -21,7 +21,7 @@
 </div>
 
 <div class="container-fluid">
-  <div class="row">
+  <div class="row" id="tasksContainer">
     @foreach ($tasks as $task)
     <div class="col-md-3 text-center mb-3">
       <div class="card ">
@@ -34,12 +34,6 @@
     </div>
     @endforeach
   </div>
-
-  <div class="row" id="tasksContainer">
-    <!-- Сюда будут добавляться новые карточки задач -->
-  </div>
-
-
 </div>
 
 

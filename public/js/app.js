@@ -33,6 +33,7 @@ $(document).ready(function () {
         $('#tasksContainer').append(newTaskHtml);
 
         // Закрытие модального окна
+        $('#createTaskForm')[0].reset();
         $('#createTaskModal').modal('hide');
       }
     });
