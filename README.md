@@ -35,4 +35,6 @@
 
 - make composer
 
+- make migrate
+
 - make start
