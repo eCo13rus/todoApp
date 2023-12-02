@@ -24,7 +24,7 @@
   <div class="row" id="tasksContainer">
     @foreach ($tasks as $task)
     <div class="col-md-3 text-center mb-3">
-      <div class="card ">
+      <div class="card">
         <h3 class="card-name">{{ $task->name }}</h3>
         <h5 class="card-header">{{ $task->title }}</h5>
         <div class="card-body">
