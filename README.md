@@ -24,6 +24,7 @@
 - PHP 8.2
 - Laravel
 - MySQL
+- jQuery
 
 ## Требования к установке
 
