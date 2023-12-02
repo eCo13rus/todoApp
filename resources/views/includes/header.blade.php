@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar navbar-expand-lg bg-dark-subtle">
         <div class="container-fluid">
-            <a class="navbar-brand ms-4" href="#">Менеджер задач</a>
+            <a class="navbar-brand ms-4" href="{{ route('home') }}">Менеджер задач</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Переключатель навигации">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -21,7 +21,7 @@
             @else
             <div class="d-flex justify-content-end">
                 <div class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-primary dropdown-toggle me-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ Auth::user()->name }}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -42,7 +42,7 @@
                             Вы уверены, что хотите выйти из системы?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                            <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal">Отмена</button>
                             <a href="{{ route('logout') }}" class="btn btn-primary">Выйти</a>
                         </div>
                     </div>

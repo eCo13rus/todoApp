@@ -12,16 +12,20 @@ class RegisterController extends Controller
 {
     public function register(Request $request)
     {
+
+        $customMessages = [
+            'name.required' => 'Имя обязательно для заполнения',
+            'email.required' => 'Email обязателен для заполнения',
+            'email.unique' => 'Такой email уже зарегистрирован.',
+            'password.required' => 'Пароль обязателен для заполнения',
+            // Другие кастомные сообщения при необходимости
+        ];
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-        ], [
-            'name.required' => 'Имя обязателено для заполнения',
-            'email.required' => 'Email обязателен для заполнения',
-            'password.required' => 'Пароль обязателен для заполнения',
-        ]
-    );
+        ], $customMessages);
 
         $user = User::create([
             'name' => $request->name,
@@ -30,6 +34,8 @@ class RegisterController extends Controller
         ]);
 
         Auth::login($user);
+
+        session()->flash('success', 'Здравствуйте ' . $user->name . ', вы успешно зарегистрировались.');
 
         return redirect()->route('home');
     }

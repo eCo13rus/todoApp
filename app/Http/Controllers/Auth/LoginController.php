@@ -29,8 +29,10 @@ class LoginController extends Controller
         }
 
         if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
+            session()->flash('success','Здравствуйте ' . Auth::user()->name . ', вход успешно выполнен!');
             return redirect()->route('home');
         }
+
 
         return redirect()->back()->withInput()->withErrors([
             'email' => 'Неверное имя пользователя или пароль.',
