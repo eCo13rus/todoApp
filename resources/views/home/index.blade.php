@@ -87,11 +87,11 @@
             <label for="editTaskDescription" class="form-label">Описание</label>
             <textarea class="form-control" id="editTaskDescription"></textarea>
           </div>
+          <div class="">
+            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            <button type="button" class="btn btn-danger" id="deleteTaskButton">Удалить задачу</button>
+          </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-        <button type="button" class="btn btn-danger" id="deleteTaskButton">Удалить задачу</button>
       </div>
     </div>
   </div>

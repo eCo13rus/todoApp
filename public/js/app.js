@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
 // Обработка отправки формы редактирования
 $(document).ready(function () {
   $('#editTaskForm').on('submit', function (e) {
@@ -117,9 +118,6 @@ $(document).ready(function () {
     });
   });
 });
-
-
-
 
 
 
