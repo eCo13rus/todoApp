@@ -27,7 +27,7 @@
       <div class="card" data-task-id="{{ $task->id }}">
         <h3 class="card-name">{{ $task->name }}</h3>
         <h5 class="card-header">{{ $task->title }}</h5>
-          <p class="card-text">{{ $task->description }}</p>
+        <p class="card-text">{{ $task->description }}</p>
       </div>
     </div>
     @endforeach
@@ -87,10 +87,10 @@
             <label for="editTaskDescription" class="form-label">Описание</label>
             <textarea class="form-control" id="editTaskDescription"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Сохранить изменения</button>
         </form>
       </div>
       <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
         <button type="button" class="btn btn-danger" id="deleteTaskButton">Удалить задачу</button>
       </div>
     </div>
