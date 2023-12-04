@@ -48,7 +48,7 @@ class TaskController extends Controller
         $task->description = $request->description;
         $task->save();
 
-        return response()->json(['message' => 'Задача обновлена']);
+        return response()->json($task);
     }
 
     public function destroy(string $id)
@@ -56,6 +56,6 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
         $task->delete();
 
-        return response()->json(['message' => 'Задача удалена']);
+        return response()->json($task);
     }
 }

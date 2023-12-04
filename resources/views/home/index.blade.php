@@ -27,9 +27,7 @@
       <div class="card" data-task-id="{{ $task->id }}">
         <h3 class="card-name">{{ $task->name }}</h3>
         <h5 class="card-header">{{ $task->title }}</h5>
-        <div class="card-body">
           <p class="card-text">{{ $task->description }}</p>
-        </div>
       </div>
     </div>
     @endforeach

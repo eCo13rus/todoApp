@@ -1,5 +1,4 @@
 // Добавление задачи
-
 $(document).ready(function () {
   $('#createTaskForm').on('submit', function (e) {
     e.preventDefault();
@@ -21,15 +20,13 @@ $(document).ready(function () {
       },
       success: function (task) {
         // Создание HTML карточки
-        var newTaskHtml = '<div class="col-md-3 text-center mb-3">' +
-          '<div class="card">' +
-          '<h3 class="card-name">' + task.name + '</h3>' +
-          '<h5 class="card-header">' + task.title + '</h5>' +
-          '<div class="card-body">' +
-          '<p class="card-text">' + task.description + '</p>' +
-          '</div>' +
-          '</div>' +
-          '</div>';
+        var newTaskHtml = `<div class="col-md-3 text-center mb-3">
+        <div class="card" data-task-id="${task.id}">
+          <h3 class="card-name">${task.name}</h3>
+          <h5 class="card-header">${task.title}</h5>
+            <p class="card-text">${task.description}</p>
+        </div>
+      </div>`;
 
         // Добавление в контейнер задач
         $('#tasksContainer').append(newTaskHtml);
@@ -81,43 +78,47 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // Обработка отправки формы редактирования
-document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('editTaskForm').addEventListener('submit', function (e) {
+$(document).ready(function () {
+  $('#editTaskForm').on('submit', function (e) {
     e.preventDefault();
 
-    var taskId = document.getElementById('editTaskId').value;
-    var taskName = document.getElementById('editTaskName').value;
-    var taskTitle = document.getElementById('editTaskTitle').value;
-    var taskDescription = document.getElementById('editTaskDescription').value;
+    var taskId = $('#editTaskId').val();
+    var taskName = $('#editTaskName').val();
+    var taskTitle = $('#editTaskTitle').val();
+    var taskDescription = $('#editTaskDescription').val();
 
-    fetch('/tasks/' + taskId, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-      },
-      body: JSON.stringify({
+    // AJAX запрос для обновления задачи
+    $.ajax({
+      type: 'POST',
+      url: '/tasks/' + taskId,
+      data: {
+        _method: 'PUT', // Для поддержки PUT запроса в Laravel через форму
         name: taskName,
         title: taskTitle,
         description: taskDescription,
-        _method: 'PUT'
-      })
-    }).then(response => response.json())
-      .then(data => {
-        // Найти элемент задачи с соответствующим data-task-id
-        var taskElement = document.querySelector('[data-task-id="' + taskId + '"]');
-        if (taskElement) {
-          taskElement.querySelector('.card-name').textContent = taskName;
-          taskElement.querySelector('.card-header').textContent = taskTitle;
-          taskElement.querySelector('.card-text').textContent = taskDescription;
-        }
+        _token: $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function (task) {
+        // Находим карточку с нужным data-task-id
+        var cardToUpdate = $(`[data-task-id="${task.id}"]`);
 
-        // Закрыть модальное окно
+        // Обновляем содержимое карточки
+        cardToUpdate.find('.card-name').text(task.name);
+        cardToUpdate.find('.card-header').text(task.title);
+        cardToUpdate.find('.card-text').text(task.description);
+
+        // Закрытие модального окна
         $('#taskModal').modal('hide');
-      })
-      .catch(error => console.error('Ошибка:', error));
+      },
+      error: function (xhr, status, error) {
+        // Обработка ошибок
+        console.error('Ошибка обновления: ' + error);
+      }
+    });
   });
 });
+
+
 
 
 
@@ -129,24 +130,31 @@ document.getElementById('deleteTaskButton').addEventListener('click', function (
   var taskId = document.getElementById('editTaskId').value;
 
   fetch('/tasks/' + taskId, {
-    method: 'DELETE', // Изменение метода на DELETE
+    method: 'DELETE',
     headers: {
       'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-      'Content-Type': 'application/json' // Указание типа содержимого
+      'Content-Type': 'application/json'
     }
-  }).then(response => {
-    if (!response.ok) {
-      throw new Error('Ошибка запроса: ' + response.statusText);
-    }
-    return response.json();
   })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Ошибка запроса: ' + response.statusText);
+      }
+      return response.json();
+    })
     .then(data => {
       console.log(data);
+      // Удаляем весь div, содержащий задачу, из DOM
+      var taskColumn = document.querySelector(`[data-task-id="${taskId}"]`).parentNode;
+      if (taskColumn) {
+        taskColumn.remove();
+      }
       // Закрыть модальное окно
       var taskModal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
       taskModal.hide();
-      // Удалить элемент задачи с страницы (если необходимо)
     })
     .catch(error => console.error('Ошибка:', error));
 });
+
+
 
