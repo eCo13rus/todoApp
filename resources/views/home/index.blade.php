@@ -24,7 +24,7 @@
   <div class="row" id="tasksContainer">
     @foreach ($tasks as $task)
     <div class="col-md-3 text-center mb-3">
-      <div class="card">
+      <div class="card" data-task-id="{{ $task->id }}">
         <h3 class="card-name">{{ $task->name }}</h3>
         <h5 class="card-header">{{ $task->title }}</h5>
         <div class="card-body">
@@ -36,7 +36,7 @@
   </div>
 </div>
 
-
+<!-- Модальное окно для добавления задачи -->
 <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -60,6 +60,40 @@
           </div>
           <button type="submit" class="btn btn-primary">Добавить задачу</button>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Модальное окно для задачи -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="taskModalLabel">Редактирование задачи</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Форма редактирования задачи -->
+        <form id="editTaskForm">
+          <input type="hidden" id="editTaskId">
+          <div class="mb-3">
+            <label for="editTaskName" class="form-label">Название</label>
+            <input type="text" class="form-control" id="editTaskName">
+          </div>
+          <div class="mb-3">
+            <label for="editTaskTitle" class="form-label">Заголовок</label>
+            <input type="text" class="form-control" id="editTaskTitle">
+          </div>
+          <div class="mb-3">
+            <label for="editTaskDescription" class="form-label">Описание</label>
+            <textarea class="form-control" id="editTaskDescription"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="deleteTaskButton">Удалить задачу</button>
       </div>
     </div>
   </div>

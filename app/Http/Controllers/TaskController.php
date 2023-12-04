@@ -35,18 +35,27 @@ class TaskController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
         //
     }
 
     public function update(Request $request, string $id)
     {
-        //
+        $task = Task::findOrFail($id);
+        $task->name = $request->name;
+        $task->title = $request->title;
+        $task->description = $request->description;
+        $task->save();
+
+        return response()->json(['message' => 'Задача обновлена']);
     }
 
     public function destroy(string $id)
     {
-        //
+        $task = Task::findOrFail($id);
+        $task->delete();
+
+        return response()->json(['message' => 'Задача удалена']);
     }
 }
