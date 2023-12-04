@@ -102,6 +102,20 @@
 <h1>Добро пожаловать в менеджер задач!
   <h4>Пожалуйста зарегистрируйтесь или войдите в свой профиль</h4>
 </h1>
+
+<div class="container-fluid">
+  <div class="row" id="tasksContainer">
+    @foreach ($tasks as $task)
+    <div class="col-md-3 text-center mb-3">
+      <div class="card" data-task-id="{{ $task->id }}">
+        <h3 class="card-name">{{ $task->name }}</h3>
+        <h5 class="card-header">{{ $task->title }}</h5>
+        <p class="card-text">{{ $task->description }}</p>
+      </div>
+    </div>
+    @endforeach
+  </div>
+</div>
 @endif
 
 @endsection
