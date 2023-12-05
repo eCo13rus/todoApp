@@ -35,10 +35,10 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Подтверждение выхода</h5>
+                            <h5 class="modal-title text-dark" id="staticBackdropLabel">Подтверждение выхода</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body text-dark">
                             Вы уверены, что хотите выйти из системы?
                         </div>
                         <div class="modal-footer">
