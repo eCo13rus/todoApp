@@ -20,13 +20,16 @@ $(document).ready(function () {
       },
       success: function (task) {
         // Создание HTML карточки
-        var newTaskHtml = `<div class="col-md-3 text-center mb-3">
-        <div class="card" data-task-id="${task.id}">
-          <h3 class="card-name">${task.name}</h3>
-          <h5 class="card-header">${task.title}</h5>
-            <p class="card-text">${task.description}</p>
-        </div>
-      </div>`;
+        var newTaskHtml = `
+        <div class="col-md-3 text-center mb-3">
+          <div class="card" style="width: 18rem;" data-task-id="${task.id}">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><strong>Название:</strong> ${task.name}</li>
+              <li class="list-group-item"><strong>Заголовок:</strong> ${task.title}</li>
+              <li class="list-group-item"><strong>Описание:</strong> ${task.description}</li>
+            </ul>
+          </div>
+        </div>`;
 
         // Добавление в контейнер задач
         $('#tasksContainer').append(newTaskHtml);
@@ -57,9 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var card = event.target.closest('.card');
     if (card) {
       var taskId = card.getAttribute('data-task-id');
-      var taskName = card.querySelector('.card-name').textContent;
-      var taskTitle = card.querySelector('.card-header').textContent;
-      var taskDescription = card.querySelector('.card-text').textContent;
+
+      // Извлекаем данные из элементов списка
+      var taskName = card.querySelector('li:nth-child(1)').textContent.replace('Название: ', '');
+      var taskTitle = card.querySelector('li:nth-child(2)').textContent.replace('Заголовок: ', '');
+      var taskDescription = card.querySelector('li:nth-child(3)').textContent.replace('Описание: ', '');
 
       // Заполняем форму данными
       document.getElementById('editTaskId').value = taskId;
@@ -73,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
 
 
 
@@ -93,31 +99,30 @@ $(document).ready(function () {
       type: 'POST',
       url: '/tasks/' + taskId,
       data: {
-        _method: 'PUT', // Для поддержки PUT запроса в Laravel через форму
+        _method: 'PUT',
         name: taskName,
         title: taskTitle,
         description: taskDescription,
         _token: $('meta[name="csrf-token"]').attr('content')
       },
       success: function (task) {
-        // Находим карточку с нужным data-task-id
         var cardToUpdate = $(`[data-task-id="${task.id}"]`);
 
         // Обновляем содержимое карточки
-        cardToUpdate.find('.card-name').text(task.name);
-        cardToUpdate.find('.card-header').text(task.title);
-        cardToUpdate.find('.card-text').text(task.description);
+        cardToUpdate.find('li:nth-child(1)').html(`<strong>Название:</strong> ${task.name}`);
+        cardToUpdate.find('li:nth-child(2)').html(`<strong>Заголовок:</strong> ${task.title}`);
+        cardToUpdate.find('li:nth-child(3)').html(`<strong>Описание:</strong> ${task.description}`);
 
         // Закрытие модального окна
         $('#taskModal').modal('hide');
       },
       error: function (xhr, status, error) {
-        // Обработка ошибок
         console.error('Ошибка обновления: ' + error);
       }
     });
   });
 });
+
 
 
 
@@ -142,17 +147,16 @@ document.getElementById('deleteTaskButton').addEventListener('click', function (
     })
     .then(data => {
       console.log(data);
-      // Удаляем весь div, содержащий задачу, из DOM
       var taskColumn = document.querySelector(`[data-task-id="${taskId}"]`).parentNode;
       if (taskColumn) {
         taskColumn.remove();
       }
-      // Закрыть модальное окно
       var taskModal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
       taskModal.hide();
     })
     .catch(error => console.error('Ошибка:', error));
 });
+
 
 
 

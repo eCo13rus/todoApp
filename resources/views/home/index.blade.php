@@ -24,15 +24,18 @@
   <div class="row" id="tasksContainer">
     @foreach ($tasks as $task)
     <div class="col-md-3 text-center mb-3">
-      <div class="card" data-task-id="{{ $task->id }}">
-        <h3 class="card-name">{{ $task->name }}</h3>
-        <h5 class="card-header">{{ $task->title }}</h5>
-        <p class="card-text">{{ $task->description }}</p>
+      <div class="card" style="width: 18rem;" data-task-id="{{ $task->id }}">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Название:</strong> {{ $task->name }}</li>
+          <li class="list-group-item"><strong>Заголовок:</strong> {{ $task->title }}</li>
+          <li class="list-group-item"><strong>Описание:</strong> {{ $task->description }}</li>
+        </ul>
       </div>
     </div>
     @endforeach
   </div>
 </div>
+
 
 <!-- Модальное окно для добавления задачи -->
 <div class="modal fade" id="createTaskModal" tabindex="-1" aria-labelledby="createTaskModalLabel" aria-hidden="true">
@@ -87,9 +90,9 @@
             <label for="editTaskDescription" class="form-label">Описание</label>
             <textarea class="form-control" id="editTaskDescription"></textarea>
           </div>
-          <div class="">
+          <div class="d-flex justify-content-start">
             <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-            <button type="button" class="btn btn-danger" id="deleteTaskButton">Удалить задачу</button>
+            <button type="button" class="btn btn-danger ms-4" id="deleteTaskButton">Удалить задачу</button>
           </div>
         </form>
       </div>
@@ -99,9 +102,12 @@
 
 
 @else
-<h1>Добро пожаловать в менеджер задач!
-  <h4>Пожалуйста зарегистрируйтесь или войдите в свой профиль</h4>
-</h1>
+<div class="mt-2">
+  <h1>Добро пожаловать в менеджер задач!
+    <h4>Пожалуйста зарегистрируйтесь или войдите в свой профиль</h4>
+  </h1>
+</div>
+
 
 <div class="container-fluid">
   <div class="row" id="tasksContainer">
