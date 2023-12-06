@@ -1,3 +1,18 @@
+// Генерация HTML Карточек
+function createTaskCard(task) {
+  return `
+    <div class="col-md-3 text-center mb-3">
+      <div class="card" style="width: 18rem;" data-task-id="${task.id}">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Название:</strong> ${task.name}</li>
+          <li class="list-group-item"><strong>Заголовок:</strong> ${task.title}</li>
+          <li class="list-group-item"><strong>Описание:</strong> ${task.description}</li>
+        </ul>
+      </div>
+    </div>`;
+}
+
+
 // Добавление задачи
 $(document).ready(function () {
   $('#createTaskForm').on('submit', function (e) {
@@ -19,68 +34,16 @@ $(document).ready(function () {
         _token: $('meta[name="csrf-token"]').attr('content')
       },
       success: function (task) {
-        // Создание HTML карточки
-        var newTaskHtml = `
-        <div class="col-md-3 text-center mb-3">
-          <div class="card" style="width: 18rem;" data-task-id="${task.id}">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item"><strong>Название:</strong> ${task.name}</li>
-              <li class="list-group-item"><strong>Заголовок:</strong> ${task.title}</li>
-              <li class="list-group-item"><strong>Описание:</strong> ${task.description}</li>
-            </ul>
-          </div>
-        </div>`;
+        // Добавление новой задачи в контейнер задач
+        $('#tasksContainer').append(createTaskCard(task));
 
-        // Добавление в контейнер задач
-        $('#tasksContainer').append(newTaskHtml);
-
-        // Закрытие модального окна
+        // Сброс формы и закрытие модального окна
         $('#createTaskForm')[0].reset();
         $('#createTaskModal').modal('hide');
       }
     });
   });
 });
-
-
-
-
-// Уведомление
-document.addEventListener("DOMContentLoaded", function () {
-  setTimeout(function () {
-    $(".alert-success").slideUp(1000);
-  }, 2500);
-});
-
-
-// Обработка кликов
-document.addEventListener('DOMContentLoaded', function () {
-  // Делегирование событий для кликов на карточках задач
-  document.getElementById('tasksContainer').addEventListener('click', function (event) {
-    var card = event.target.closest('.card');
-    if (card) {
-      var taskId = card.getAttribute('data-task-id');
-
-      // Извлекаем данные из элементов списка
-      var taskName = card.querySelector('li:nth-child(1)').textContent.replace('Название: ', '');
-      var taskTitle = card.querySelector('li:nth-child(2)').textContent.replace('Заголовок: ', '');
-      var taskDescription = card.querySelector('li:nth-child(3)').textContent.replace('Описание: ', '');
-
-      // Заполняем форму данными
-      document.getElementById('editTaskId').value = taskId;
-      document.getElementById('editTaskName').value = taskName;
-      document.getElementById('editTaskTitle').value = taskTitle;
-      document.getElementById('editTaskDescription').value = taskDescription;
-
-      // Показываем модальное окно
-      var taskModal = new bootstrap.Modal(document.getElementById('taskModal'));
-      taskModal.show();
-    }
-  });
-});
-
-
-
 
 
 
@@ -106,12 +69,7 @@ $(document).ready(function () {
         _token: $('meta[name="csrf-token"]').attr('content')
       },
       success: function (task) {
-        var cardToUpdate = $(`[data-task-id="${task.id}"]`);
-
-        // Обновляем содержимое карточки
-        cardToUpdate.find('li:nth-child(1)').html(`<strong>Название:</strong> ${task.name}`);
-        cardToUpdate.find('li:nth-child(2)').html(`<strong>Заголовок:</strong> ${task.title}`);
-        cardToUpdate.find('li:nth-child(3)').html(`<strong>Описание:</strong> ${task.description}`);
+        $(`[data-task-id="${task.id}"]`).replaceWith(createTaskCard(task));
 
         // Закрытие модального окна
         $('#taskModal').modal('hide');
@@ -122,9 +80,6 @@ $(document).ready(function () {
     });
   });
 });
-
-
-
 
 
 
@@ -160,3 +115,49 @@ document.getElementById('deleteTaskButton').addEventListener('click', function (
 
 
 
+// Уведомление о входе
+document.addEventListener("DOMContentLoaded", function () {
+  setTimeout(function () {
+    $(".alert-success").slideUp(1000);
+  }, 2500);
+});
+
+
+
+
+// Обработка кликов
+document.addEventListener('DOMContentLoaded', function () {
+  // Делегирование событий для кликов на карточках задач
+  document.getElementById('tasksContainer').addEventListener('click', function (event) {
+    var card = event.target.closest('.card');
+    if (card) {
+      var taskId = card.getAttribute('data-task-id');
+
+      // Извлекаем данные из элементов списка
+      var taskName = card.querySelector('li:nth-child(1)').textContent.replace('Название: ', '');
+      var taskTitle = card.querySelector('li:nth-child(2)').textContent.replace('Заголовок: ', '');
+      var taskDescription = card.querySelector('li:nth-child(3)').textContent.replace('Описание: ', '');
+
+      // Заполняем форму данными
+      document.getElementById('editTaskId').value = taskId;
+      document.getElementById('editTaskName').value = taskName;
+      document.getElementById('editTaskTitle').value = taskTitle;
+      document.getElementById('editTaskDescription').value = taskDescription;
+
+      // Показываем модальное окно
+      var taskModal = new bootstrap.Modal(document.getElementById('taskModal'));
+      taskModal.show();
+    }
+  });
+});
+
+
+// чтения данных из data-tasks
+document.addEventListener('DOMContentLoaded', function() {
+  var tasksContainer = document.getElementById('tasksContainer');
+  var tasks = JSON.parse(tasksContainer.getAttribute('data-tasks'));
+
+  tasks.forEach(function(task) {
+    $('#tasksContainer').append(createTaskCard(task));
+  });
+});

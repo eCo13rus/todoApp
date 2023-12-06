@@ -21,18 +21,8 @@
 </div>
 
 <div class="container-fluid">
-  <div class="row" id="tasksContainer">
-    @foreach ($tasks as $task)
-    <div class="col-md-3 text-center mb-3">
-      <div class="card" style="width: 18rem;" data-task-id="{{ $task->id }}">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><strong>Название:</strong> {{ $task->name }}</li>
-          <li class="list-group-item"><strong>Заголовок:</strong> {{ $task->title }}</li>
-          <li class="list-group-item"><strong>Описание:</strong> {{ $task->description }}</li>
-        </ul>
-      </div>
-    </div>
-    @endforeach
+  <div class="row ms-5 mb-3" id="tasksContainer" data-tasks='@json($tasks)'>
+    <!-- Задачи будут добавлены здесь через JavaScript -->
   </div>
 </div>
 
