@@ -1,11 +1,11 @@
 // Генерация HTML Карточек
 function createTaskCard(task) {
   return `
-    <div class="col-md-3 text-center mb-3">
-      <div class="card" style="width: 18rem;" data-task-id="${task.id}">
+    <div class="col-md-3 text-center mb-5">
+      <div class="card shadow-lg" style="width: 17rem; height: 220px" data-task-id="${task.id}">
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><strong>Название:</strong> ${task.name}</li>
-          <li class="list-group-item"><strong>Заголовок:</strong> ${task.title}</li>
+          <li class="list-group-item"><strong>Создал:</strong> ${task.name}</li>
+          <li class="list-group-item"><strong>Кому:</strong> ${task.title}</li>
           <li class="list-group-item"><strong>Описание:</strong> ${task.description}</li>
         </ul>
       </div>
@@ -134,8 +134,8 @@ document.addEventListener('DOMContentLoaded', function () {
       var taskId = card.getAttribute('data-task-id');
 
       // Извлекаем данные из элементов списка
-      var taskName = card.querySelector('li:nth-child(1)').textContent.replace('Название: ', '');
-      var taskTitle = card.querySelector('li:nth-child(2)').textContent.replace('Заголовок: ', '');
+      var taskName = card.querySelector('li:nth-child(1)').textContent.replace('Создал: ', '');
+      var taskTitle = card.querySelector('li:nth-child(2)').textContent.replace('Кому: ', '');
       var taskDescription = card.querySelector('li:nth-child(3)').textContent.replace('Описание: ', '');
 
       // Заполняем форму данными
