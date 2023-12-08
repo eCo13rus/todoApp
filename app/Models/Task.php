@@ -15,6 +15,6 @@ class Task extends Model
 
     public function getShortDescriptionAttribute()
     {
-        return mb_strimwidth($this->description, 0, 60, '...');   
+        return mb_strimwidth($this->description, 0, 55, '...');   
     }
 }

@@ -128,25 +128,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // Обработка кликов
-document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('tasksContainer').addEventListener('click', function (event) {
-    const card = event.target.closest('.card');
-    if (card) {
-      var taskId = card.getAttribute('data-task-id');
-      var taskName = card.querySelector('li:nth-child(1)').textContent.replace('Создал: ', '');
-      var taskTitle = card.querySelector('li:nth-child(2)').textContent.replace('Кому: ', '');
-      var taskDescription = card.querySelector('li:nth-child(3)').getAttribute('data-full-description');
+$(document).ready(function () {
+  $('#tasksContainer').on('click', '.card', function () {
+    const card = $(this);
+    const taskId = card.data('task-id');
+    const taskName = card.find('li:nth-child(1)').text().replace('Создал: ', '');
+    const taskTitle = card.find('li:nth-child(2)').text().replace('Кому: ', '');
+    const taskDescription = card.find('li:nth-child(3)').data('full-description');
 
-      document.getElementById('editTaskId').value = taskId;
-      document.getElementById('editTaskName').value = taskName;
-      document.getElementById('editTaskTitle').value = taskTitle;
-      document.getElementById('editTaskDescription').value = taskDescription;
+    $('#editTaskId').val(taskId);
+    $('#editTaskName').val(taskName);
+    $('#editTaskTitle').val(taskTitle);
+    $('#editTaskDescription').val(taskDescription);
 
-      var taskModal = new bootstrap.Modal(document.getElementById('taskModal'));
-      taskModal.show();
-    }
+    const taskModal = new bootstrap.Modal($('#taskModal'));
+    taskModal.show();
   });
 });
+
+
 
 
 
