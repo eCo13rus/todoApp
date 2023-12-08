@@ -1,12 +1,12 @@
 // Генерация HTML Карточек
 function createTaskCard(task) {
   return `
-    <div class="col-md-3 text-center mb-5">
-      <div class="card shadow-lg" style="width: 17rem; height: 220px" data-task-id="${task.id}">
+    <div class="col-md-3 text-start">
+      <div class="card mb-5 ms-4" style="width: 15rem; height: 200px" data-task-id="${task.id}">
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><strong>Создал:</strong> ${task.name}</li>
           <li class="list-group-item"><strong>Кому:</strong> ${task.title}</li>
-          <li class="list-group-item"><strong>Описание:</strong> ${task.description}</li>
+          <li class="list-group-item" data-full-description="${task.description}"><strong>Описание:</strong> ${task.short_description}</li>
         </ul>
       </div>
     </div>`;
@@ -19,9 +19,9 @@ $(document).ready(function () {
     e.preventDefault();
 
     // Получение значений из формы
-    var creatorName = $('#creatorName').val();
-    var taskName = $('#taskName').val();
-    var taskDescription = $('#taskDescription').val();
+    const creatorName = $('#creatorName').val();
+    const taskName = $('#taskName').val();
+    const taskDescription = $('#taskDescription').val();
 
     // AJAX запрос
     $.ajax({
@@ -52,15 +52,16 @@ $(document).ready(function () {
   $('#editTaskForm').on('submit', function (e) {
     e.preventDefault();
 
-    var taskId = $('#editTaskId').val();
-    var taskName = $('#editTaskName').val();
-    var taskTitle = $('#editTaskTitle').val();
-    var taskDescription = $('#editTaskDescription').val();
+    const taskId = $('#editTaskId').val();
+    const taskName = $('#editTaskName').val();
+    const taskTitle = $('#editTaskTitle').val();
+    const taskDescription = $('#editTaskDescription').val();
 
     // AJAX запрос для обновления задачи
+    const taskElement = $(`[data-task-id="${taskId}"]`);
     $.ajax({
       type: 'POST',
-      url: '/tasks/' + taskId,
+      url: `/tasks/${taskId}`,
       data: {
         _method: 'PUT',
         name: taskName,
@@ -68,8 +69,9 @@ $(document).ready(function () {
         description: taskDescription,
         _token: $('meta[name="csrf-token"]').attr('content')
       },
+
       success: function (task) {
-        $(`[data-task-id="${task.id}"]`).replaceWith(createTaskCard(task));
+        taskElement.replaceWith(createTaskCard(task));
 
         // Закрытие модального окна
         $('#taskModal').modal('hide');
@@ -85,9 +87,9 @@ $(document).ready(function () {
 
 // Отправка запроса на удаление задачи
 document.getElementById('deleteTaskButton').addEventListener('click', function () {
-  var taskId = document.getElementById('editTaskId').value;
+  const taskId = document.getElementById('editTaskId').value;
 
-  fetch('/tasks/' + taskId, {
+  fetch(`/tasks/${taskId}`, {
     method: 'DELETE',
     headers: {
       'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
@@ -96,17 +98,17 @@ document.getElementById('deleteTaskButton').addEventListener('click', function (
   })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Ошибка запроса: ' + response.statusText);
+        throw new Error(`Ошибка запроса: ${response.statusText}`);
       }
       return response.json();
     })
     .then(data => {
       console.log(data);
-      var taskColumn = document.querySelector(`[data-task-id="${taskId}"]`).parentNode;
+      const taskColumn = document.querySelector(`[data-task-id="${taskId}"]`).parentNode;
       if (taskColumn) {
         taskColumn.remove();
       }
-      var taskModal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
+      const taskModal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
       taskModal.hide();
     })
     .catch(error => console.error('Ошибка:', error));
@@ -118,8 +120,8 @@ document.getElementById('deleteTaskButton').addEventListener('click', function (
 // Уведомление о входе
 document.addEventListener("DOMContentLoaded", function () {
   setTimeout(function () {
-    $(".alert-success").slideUp(1000);
-  }, 2500);
+    $(".alert-primary").slideUp(600);
+  }, 2000);
 });
 
 
@@ -127,29 +129,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Обработка кликов
 document.addEventListener('DOMContentLoaded', function () {
-  // Делегирование событий для кликов на карточках задач
   document.getElementById('tasksContainer').addEventListener('click', function (event) {
-    var card = event.target.closest('.card');
+    const card = event.target.closest('.card');
     if (card) {
       var taskId = card.getAttribute('data-task-id');
-
-      // Извлекаем данные из элементов списка
       var taskName = card.querySelector('li:nth-child(1)').textContent.replace('Создал: ', '');
       var taskTitle = card.querySelector('li:nth-child(2)').textContent.replace('Кому: ', '');
-      var taskDescription = card.querySelector('li:nth-child(3)').textContent.replace('Описание: ', '');
+      var taskDescription = card.querySelector('li:nth-child(3)').getAttribute('data-full-description');
 
-      // Заполняем форму данными
       document.getElementById('editTaskId').value = taskId;
       document.getElementById('editTaskName').value = taskName;
       document.getElementById('editTaskTitle').value = taskTitle;
       document.getElementById('editTaskDescription').value = taskDescription;
 
-      // Показываем модальное окно
       var taskModal = new bootstrap.Modal(document.getElementById('taskModal'));
       taskModal.show();
     }
   });
 });
+
 
 
 // чтения данных из data-tasks

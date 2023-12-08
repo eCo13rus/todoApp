@@ -24,7 +24,6 @@ Route::post('login', [LoginController::class, 'login'])->name('login');
 
 Route::post('register', [RegisterController::class, 'register'])->name('register');
 
-
 Route::get('login', function () {
     return view('login.index');
 })->name('login');

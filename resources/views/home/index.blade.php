@@ -5,7 +5,7 @@
 @if(Auth::check())
 
 @if (session('success'))
-<div class="alert alert-success mb-0" role="alert">
+<div class="alert alert-primary mb-0" role="alert">
   {{ session('success') }}
 </div>
 @endif
@@ -20,8 +20,8 @@
   <h1>Задачи:</h1>
 </div>
 
-<div class="container-fluid mt-3">
-  <div class="row ms-5 mt-3" id="tasksContainer" data-tasks='@json($tasks)'>
+<div class="container-fluid">
+  <div class="row ms-5 m-1" id="tasksContainer" data-tasks='@json($tasks)'>
     <!-- Задачи будут добавлены здесь через JavaScript -->
   </div>
 </div>
@@ -94,19 +94,26 @@
 @else
 <div class="mt-2">
   <h1>Добро пожаловать в менеджер задач!
-    <h4>Пожалуйста зарегистрируйтесь или войдите в свой профиль</h4>
+    <h4>Пожалуйста зарегистрируйтесь или войдите в свой профиль.</h4>
   </h1>
 </div>
 
+<div class="col-span-full d-flex justify-content-start ms-4">
+  <h1>Задачи:</h1>
+</div>
 
 <div class="container-fluid">
   <div class="row" id="tasksContainer">
     @foreach ($tasks as $task)
-    <div class="col-md-3 text-center mb-3">
-      <div class="card" data-task-id="{{ $task->id }}">
-        <h3 class="card-name">{{ $task->name }}</h3>
-        <h5 class="card-header">{{ $task->title }}</h5>
-        <p class="card-text">{{ $task->description }}</p>
+    <div class="col-md-3 text-start">
+      <div class="card ms-5 m-3" style="width: 15rem; height: 200px" data-task-id="{{ $task->id }}">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Создал:</strong> {{ $task->name }}</li>
+          <li class="list-group-item"><strong>Кому:</strong> {{ $task->title }}</li>
+          <li class="list-group-item" data-full-description="{{ $task->description }}">
+            <strong>Описание:</strong> {{ $task->short_description }}
+          </li>
+        </ul>
       </div>
     </div>
     @endforeach

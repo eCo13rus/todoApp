@@ -1,6 +1,6 @@
 .card:hover {
-    border: 1px solid #6cb0f8; /* Синяя граница */
-    transform: scale(1.10); /* Небольшое увеличение размера */
+    outline: 2px solid #5fa9f9; /* Синяя граница */
+    transform: scale(1.05); /* Небольшое увеличение размера */
     transition: all 0.2s ease-in-out; /* Плавный переход */
     cursor: pointer;
   }
