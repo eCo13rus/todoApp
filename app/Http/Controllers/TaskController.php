@@ -7,10 +7,18 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::all();
-        return view('home.index', compact('tasks'));
+        if ($request->ajax()) {
+            $tasks = Task::paginate(8); // Или любое другое количество, которое ты предпочитаешь
+            return response()->json([
+                'tasks' => $tasks->items(),
+                'pagination' => $tasks->links()->toHtml(), // Отправляем HTML пагинации
+            ]);
+        } else {
+            $tasks = Task::paginate(8);
+            return view('home.index', compact('tasks'));
+        }
     }
 
     public function create()

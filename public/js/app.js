@@ -2,7 +2,7 @@
 function createTaskCard(task) {
   return `
     <div class="col-md-3 text-start">
-      <div class="card mb-5 ms-4" style="width: 15rem; height: 200px" data-task-id="${task.id}">
+      <div class="card mb-4 ms-4" style="width: 15rem; height: 200px" data-task-id="${task.id}">
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><strong>Создал:</strong> ${task.name}</li>
           <li class="list-group-item"><strong>Кому:</strong> ${task.title}</li>
@@ -11,6 +11,34 @@ function createTaskCard(task) {
       </div>
     </div>`;
 }
+
+
+function loadTasks(page = 1) {
+  $.ajax({
+      url: '?page=' + page,
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+          $('#tasksContainer').html('');
+          data.tasks.forEach(task => {
+              $('#tasksContainer').append(createTaskCard(task));
+          });
+          $('#pagination').html(data.pagination);
+      }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadTasks();
+});
+
+
+$(document).on('click', '.pagination a', function(event) {
+  event.preventDefault(); 
+  var page = $(this).attr('href').split('page=')[1];
+  loadTasks(page);
+});
+
 
 
 // Добавление задачи
