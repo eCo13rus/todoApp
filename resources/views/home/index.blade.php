@@ -21,16 +21,14 @@
 </div>
 
 <div class="container-fluid">
-  <div class="row ms-5 m-1" id="tasksContainer" data-tasks='@json($tasks)'>
+  <div class="row ms-5 m-3" id="tasksContainer" data-tasks='@json($tasks)'>
     <!-- Задачи будут добавлены здесь через JavaScript -->
   </div>
 </div>
 
-<div class="d-flex justify-content-center move-up pt-4" id="pagination">
-    {{ $tasks->links() }}
+<div class="pagination py-5" id="pagination">
+  {{ $tasks->links() }}
 </div>
-
-
 
 @include('modals.create')
 

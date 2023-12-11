@@ -10,7 +10,7 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $tasks = Task::paginate(8); // Или любое другое количество, которое ты предпочитаешь
+            $tasks = Task::paginate(8);
             return response()->json([
                 'tasks' => $tasks->items(),
                 'pagination' => $tasks->links()->toHtml(), // Отправляем HTML пагинации

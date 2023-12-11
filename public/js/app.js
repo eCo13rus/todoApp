@@ -13,28 +13,30 @@ function createTaskCard(task) {
 }
 
 
-function loadTasks(page = 1) {
+// Пагинация
+function loadTasks(page = 1, callback = null) {
   $.ajax({
-      url: '?page=' + page,
-      type: 'get',
-      dataType: 'json',
-      success: function(data) {
-          $('#tasksContainer').html('');
-          data.tasks.forEach(task => {
-              $('#tasksContainer').append(createTaskCard(task));
-          });
-          $('#pagination').html(data.pagination);
-      }
+    url: `?page=${page}`,
+    type: 'get',
+    dataType: 'json',
+    success: function (data) {
+      $('#tasksContainer').html('');
+      data.tasks.forEach(task => {
+        $('#tasksContainer').append(createTaskCard(task));
+      });
+      $('#pagination').html(data.pagination);
+      if (callback) callback(data);
+    }
   });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   loadTasks();
 });
 
 
-$(document).on('click', '.pagination a', function(event) {
-  event.preventDefault(); 
+$(document).on('click', '.pagination a', function (event) {
+  event.preventDefault();
   var page = $(this).attr('href').split('page=')[1];
   loadTasks(page);
 });
@@ -62,8 +64,18 @@ $(document).ready(function () {
         _token: $('meta[name="csrf-token"]').attr('content')
       },
       success: function (task) {
-        // Добавление новой задачи в контейнер задач
-        $('#tasksContainer').append(createTaskCard(task));
+        // Перезагрузить текущую страницу пагинации после добавления задачи
+        loadTasks(undefined, function (data) {
+          var currentPage = $('.pagination .active span').text();
+          var tasksPerPage = 8; // Предполагается, что у тебя 8 задач на странице
+          var totalTasks = data.tasks.length + 1; // Учитываем только что добавленную задачу
+
+          // Проверяем, нужно ли перейти на новую страницу
+          if (totalTasks > tasksPerPage) {
+            var newPage = parseInt(currentPage) + 1;
+            loadTasks(newPage);
+          }
+        });
 
         // Сброс формы и закрытие модального окна
         $('#createTaskForm')[0].reset();
@@ -72,6 +84,7 @@ $(document).ready(function () {
     });
   });
 });
+
 
 
 
@@ -131,16 +144,27 @@ document.getElementById('deleteTaskButton').addEventListener('click', function (
       return response.json();
     })
     .then(data => {
-      console.log(data);
       const taskColumn = document.querySelector(`[data-task-id="${taskId}"]`).parentNode;
       if (taskColumn) {
         taskColumn.remove();
       }
       const taskModal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
       taskModal.hide();
+
+      // Перезагружаем текущую страницу пагинации, чтобы обновить список задач
+      var currentPage = parseInt($('.pagination .active span').text());
+      var tasksCount = $('#tasksContainer').children().length;
+      if (tasksCount <= 1 && currentPage > 1) {
+        // Если на странице осталась одна или нет задач, и это не первая страница, загружаем предыдущую
+        loadTasks(currentPage - 1);
+      } else {
+        // В противном случае просто обновляем текущую страницу
+        loadTasks(currentPage);
+      }
     })
     .catch(error => console.error('Ошибка:', error));
 });
+
 
 
 
@@ -179,11 +203,17 @@ $(document).ready(function () {
 
 
 // чтения данных из data-tasks
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   var tasksContainer = document.getElementById('tasksContainer');
-  var tasks = JSON.parse(tasksContainer.getAttribute('data-tasks'));
+  var tasksData = tasksContainer.getAttribute('data-tasks');
 
-  tasks.forEach(function(task) {
-    $('#tasksContainer').append(createTaskCard(task));
-  });
+  if (tasksData) {
+    var tasks = JSON.parse(tasksData);
+    if (Array.isArray(tasks)) {
+      tasks.forEach(function (task) {
+        $('#tasksContainer').append(createTaskCard(task));
+      });
+    }
+  }
 });
+
