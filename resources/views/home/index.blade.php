@@ -5,7 +5,7 @@
 @if(Auth::check())
 
 @if (session('success'))
-<div class="alert alert-primary mb-0" role="alert">
+<div class="alert alert-primary" role="alert">
   {{ session('success') }}
 </div>
 @endif
@@ -27,8 +27,9 @@
 </div>
 
 <div class="pagination py-5" id="pagination">
-  {{ $tasks->links() }}
+        {{ $tasks->links() }}
 </div>
+
 
 @include('modals.create')
 
