@@ -38,12 +38,13 @@ class UserProfileController extends Controller
             'new_password' => 'nullable|string|min:6|confirmed',
         ], $customMessages);
 
-        if (!Hash::check($request->current_password, $user->password)) {
-            return redirect()->back()->withErrors(['current_password' => 'Неверный текущий пароль']);
+        if (!$request->filled('new_password')) {
+            session()->flash('current_password_correct', 'Текущий пароль введен верно. Введите новый пароль для обновления профиля.');
+            return redirect()->back();
         }
 
-        if (!$request->filled('new_password')) {
-            return redirect()->back()->withErrors(['new_password' => 'Введите новый пароль для обновления профиля.']);
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->withErrors(['current_password' => 'Неверный текущий пароль']);
         }
 
         $user->password = Hash::make($request->new_password);

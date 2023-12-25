@@ -6,6 +6,13 @@
     <form method="POST" action="{{ route('profile.update') }}">
         @csrf
 
+        @if (session('current_password_correct'))
+        <div class="alert alert-success">
+            {{ session('current_password_correct') }}
+        </div>
+        @endif
+
+
         <div class="mb-3 text-start mt-4">
             <label for="current_password" class="form-label">Текущий пароль</label>
             <input type="password" class="form-control {{ $errors->has('current_password') ? 'is-invalid' : '' }}" id="current_password" name="current_password" autocomplete="new-password" required>
