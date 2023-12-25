@@ -30,7 +30,7 @@
 
                     <div class="mb-3 text-start">
                         <label for="exampleInputPassword1" class="form-label">Пароль</label>
-                        <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" id="exampleInputPassword1" name="password" placeholder="Введите пароль">
+                        <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" id="exampleInputPassword1" name="password" autocomplete="new-password" placeholder="Введите пароль">
                         @if ($errors->has('password'))
                         <div class="invalid-feedback">
                             {{ $errors->first('password') }}
@@ -40,7 +40,7 @@
 
                     <div class="mb-3 text-start">
                         <label for="exampleInputPassword2" class="form-label">Подтверждение пароля</label>
-                        <input type="password" class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}" id="exampleInputPassword2" name="password_confirmation" placeholder="Введите пароль еще раз">
+                        <input type="password" class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}" id="exampleInputPassword2" name="password_confirmation" autocomplete="new-password" placeholder="Введите пароль еще раз">
                         @if ($errors->has('password_confirmation'))
                         <div class="invalid-feedback">
                             {{ $errors->first('password_confirmation') }}

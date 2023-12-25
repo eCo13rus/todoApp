@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,5 +32,11 @@ Route::get('login', function () {
 Route::get('register', function () {
     return view('register.index');
 })->name('register');
+
+Route::get('/profile', [UserProfileController::class, 'show'])->name('profile.show');
+
+Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
+
+Route::post('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
 
 Route::resource('tasks', TaskController::class);

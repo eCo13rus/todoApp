@@ -8,15 +8,15 @@
       </div>
       <div class="modal-body">
         <form id="createTaskForm">
-          <div class="mb-3">
+          <div class="mb-3 text-start">
             <label for="creatorName" class="form-label">Создал:</label>
             <input type="text" class="form-control" id="creatorName" name="name" required>
           </div>
-          <div class="mb-3">
+          <div class="mb-3 text-start">
             <label for="taskName" class="form-label">Кому:</label>
             <input type="text" class="form-control" id="taskName" name="title" required>
           </div>
-          <div class="mb-3">
+          <div class="mb-3 text-start">
             <label for="taskDescription" class="form-label">Описание задачи:</label>
             <textarea class="form-control" id="taskDescription" name="description" rows="3" required></textarea>
           </div>

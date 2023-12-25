@@ -25,7 +25,7 @@
                         {{ Auth::user()->name }}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Профиль</a></li>
+                        <li><a class="dropdown-item" href="{{ route('profile.show') }}">Профиль</a></li>
                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Выйти</a></li>
                     </ul>
                 </div>

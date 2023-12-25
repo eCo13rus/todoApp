@@ -10,15 +10,15 @@
         <!-- Форма редактирования задачи -->
         <form id="editTaskForm">
           <input type="hidden" id="editTaskId">
-          <div class="mb-3">
+          <div class="mb-3 text-start">
             <label for="editTaskName" class="form-label">Создал:</label>
             <input type="text" class="form-control" id="editTaskName">
           </div>
-          <div class="mb-3">
+          <div class="mb-3 text-start">
             <label for="editTaskTitle" class="form-label">Кому:</label>
             <input type="text" class="form-control" id="editTaskTitle">
           </div>
-          <div class="mb-3">
+          <div class="mb-3 text-start">
             <label for="editTaskDescription" class="form-label">Описание:</label>
             <textarea class="form-control" id="editTaskDescription"></textarea>
           </div>

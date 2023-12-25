@@ -5,7 +5,7 @@
 @if(Auth::check())
 
 @if (session('success'))
-<div class="alert alert-primary" role="alert">
+<div class="alert alert-primary alert-fixed-top" role="alert">
   {{ session('success') }}
 </div>
 @endif
@@ -37,21 +37,21 @@
 
 
 @else
-<div class="mt-2">
+<div class="mt-3">
   <h1>Добро пожаловать в менеджер задач!
     <h4>Пожалуйста зарегистрируйтесь или войдите в свой профиль.</h4>
   </h1>
 </div>
 
-<div class="col-span-full d-flex justify-content-start ms-4">
+<div class="col-span-full d-flex justify-content-start ms-4 m-3">
   <h2>Задачи:</h2>
 </div>
 
 <div class="container-fluid">
-  <div class="row" id="tasksContainer">
+  <div class="row ms-5 m-3" id="tasksContainer">
     @foreach ($tasks as $task)
     <div class="col-md-3 text-start">
-      <div class="card ms-5 m-3" style="width: 15rem; height: 200px" data-task-id="{{ $task->id }}">
+      <div class="card mb-4 ms-4" style="width: 15rem; height: 200px" data-task-id="{{ $task->id }}">
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><strong>Создал:</strong> {{ $task->name }}</li>
           <li class="list-group-item"><strong>Кому:</strong> {{ $task->title }}</li>

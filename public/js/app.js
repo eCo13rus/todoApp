@@ -176,12 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }, 2000);
 });
 
-// /* Появление уведомления */
-// document.addEventListener("DOMContentLoaded", function () {
-//   setTimeout(function () {
-//     $(".alert-primary").slideDown(600).delay(1500).slideUp(600);
-//   }, 500); // Появляется через 1 секунду после загрузки страницы
-// });
 
 
 // Обработка кликов
