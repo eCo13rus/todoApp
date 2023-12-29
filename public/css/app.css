@@ -1,3 +1,4 @@
+/* Пагинация */
 .card:hover {
   outline: 2px solid #5fa9f9;
   /* Синяя граница */
@@ -8,10 +9,34 @@
   cursor: pointer;
 }
 
+
+/* Пагинация */
 #pagination {
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: auto;
+}
+
+
+/* Правим стили для уведомления */
+.alert-fixed-top {
+  position: fixed;
+  top: 62px; /* Высота хедера */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 35%; /* Или любая ширина, которая тебе нужна */
+  opacity: 0; /* Начальное состояние для анимации появления */
+  transition: opacity 1s, visibility 1s; /* Плавное появление и исчезновение */
+  visibility: hidden; /* Начальное состояние скрыто */
+  margin: 0; /* Убираем внешние отступы */
+  border-radius: 50%; /* Убираем скругление, если оно есть по умолчанию */
+}
+
+
+/* Убираем отступ между хедером и уведомлением */
+body .alert-fixed-top {
+  position: fixed;
+  border-radius: 10px;
 }

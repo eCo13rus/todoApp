@@ -63,20 +63,13 @@ $(document).ready(function () {
         description: taskDescription,
         _token: $('meta[name="csrf-token"]').attr('content')
       },
-      success: function (task) {
-        // Перезагрузить текущую страницу пагинации после добавления задачи
-        loadTasks(undefined, function (data) {
-          var currentPage = $('.pagination .active span').text();
-          var tasksPerPage = 8; // Предполагается, что у тебя 8 задач на странице
-          var totalTasks = data.tasks.length + 1; // Учитываем только что добавленную задачу
-
-          // Проверяем, нужно ли перейти на новую страницу
-          if (totalTasks > tasksPerPage) {
-            var newPage = parseInt(currentPage) + 1;
-            loadTasks(newPage);
-          }
-        });
-
+      success: function (response) {
+        var totalTasks = response.totalTasks; // Общее количество задач
+        var tasksPerPage = 8;
+        var currentPage = Math.ceil(totalTasks / tasksPerPage); // Вычисляем текущую страницу
+      
+        loadTasks(currentPage); // Загружаем нужную страницу
+        
         // Сброс формы и закрытие модального окна
         $('#createTaskForm')[0].reset();
         $('#createTaskModal').modal('hide');
@@ -127,16 +120,19 @@ $(document).ready(function () {
 
 
 // Отправка запроса на удаление задачи
-document.getElementById('deleteTaskButton').addEventListener('click', function () {
-  const taskId = document.getElementById('editTaskId').value;
+var deleteTaskButton = document.getElementById('deleteTaskButton');
 
-  fetch(`/tasks/${taskId}`, {
-    method: 'DELETE',
-    headers: {
-      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-      'Content-Type': 'application/json'
-    }
-  })
+if (deleteTaskButton) {
+  deleteTaskButton.addEventListener('click', function () {
+    const taskId = document.getElementById('editTaskId').value;
+
+    fetch(`/tasks/${taskId}`, {
+      method: 'DELETE',
+      headers: {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        'Content-Type': 'application/json'
+      }
+    })
     .then(response => {
       if (!response.ok) {
         throw new Error(`Ошибка запроса: ${response.statusText}`);
@@ -163,18 +159,37 @@ document.getElementById('deleteTaskButton').addEventListener('click', function (
       }
     })
     .catch(error => console.error('Ошибка:', error));
-});
-
+  });
+}
 
 
 
 
 // Уведомление о входе
 document.addEventListener("DOMContentLoaded", function () {
+  var alertPrimary = $(".alert-primary");
+  // Плавно показываем уведомление
   setTimeout(function () {
-    $(".alert-primary").slideUp(600);
-  }, 2000);
+    alertPrimary.css({
+      'opacity': '1',
+      'visibility': 'visible' // Делаем уведомление видимым
+    });
+  }, 200);
+  
+  // Плавно скрываем уведомление и делаем его невидимым
+  setTimeout(function () {
+    alertPrimary.css({
+      'opacity': '0',
+      'visibility': 'hidden' // Скрываем уведомление
+    });
+
+  setTimeout(function () {
+    alertPrimary.remove();
+  }, 1000);
+  
+  }, 4000); // через 4 секунды начинаем скрывать
 });
+
 
 
 
@@ -204,15 +219,19 @@ $(document).ready(function () {
 // чтения данных из data-tasks
 document.addEventListener('DOMContentLoaded', function () {
   var tasksContainer = document.getElementById('tasksContainer');
-  var tasksData = tasksContainer.getAttribute('data-tasks');
 
-  if (tasksData) {
-    var tasks = JSON.parse(tasksData);
-    if (Array.isArray(tasks)) {
-      tasks.forEach(function (task) {
-        $('#tasksContainer').append(createTaskCard(task));
-      });
+  if (tasksContainer) {
+    var tasksData = tasksContainer.getAttribute('data-tasks');
+
+    if (tasksData) {
+      var tasks = JSON.parse(tasksData);
+      if (Array.isArray(tasks)) {
+        tasks.forEach(function (task) {
+          $('#tasksContainer').append(createTaskCard(task));
+        });
+      }
     }
   }
 });
+
 

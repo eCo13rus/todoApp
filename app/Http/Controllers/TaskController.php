@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
+
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -9,14 +11,14 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
+        $tasks = Task::paginate(8);
+
         if ($request->ajax()) {
-            $tasks = Task::paginate(8);
             return response()->json([
                 'tasks' => $tasks->items(),
                 'pagination' => $tasks->links()->toHtml(), // Отправляем HTML пагинации
             ]);
         } else {
-            $tasks = Task::paginate(8);
             return view('home.index', compact('tasks'));
         }
     }
@@ -35,7 +37,12 @@ class TaskController extends Controller
         $task->user_id = auth()->id();
         $task->save();
 
-        return response()->json($task);
+        $totalTasks = Task::count(); // Получаем общее количество задач
+
+        return response()->json([
+            'task' => $task,
+            'totalTasks' => $totalTasks // Возвращаем общее количество задач
+        ]);
     }
 
     public function show(string $id)

@@ -1,8 +1,8 @@
 @extends('layouts.base')
 
 @section('content')
-<div class="container py-5">
-    <div class="row">
+<div class="container py-5 ">
+    <div class="row py-5">
         <div class="col-md-4 mx-auto">
             <div class="p-4 border rounder shadow">
                 @if(session('error'))
@@ -15,7 +15,7 @@
 
                     <div class="mb-3 text-start">
                         <label for="exampleInputEmail1" class="form-label">Адрес электронной почты</label>
-                        <input type="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Введите почту" value="{{ old('email') }}">
+                        <input type="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Введите почту" value="{{ old('email') }}" autocomplete="off">
                         @if ($errors->has('email'))
                         <div class="invalid-feedback">
                             {{ $errors->first('email') }}
@@ -25,7 +25,7 @@
 
                     <div class="mb-3 text-start">
                         <label for="exampleInputPassword1" class="form-label">Пароль</label>
-                        <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" id="exampleInputPassword1" name="password" autocomplete="new-password" placeholder="Введите пароль">
+                        <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" id="exampleInputPassword1" name="password" placeholder="Введите пароль" autocomplete="off">
                         @if ($errors->has('password'))
                         <div class="invalid-feedback">
                             {{ $errors->first('password') }}
