@@ -20,7 +20,7 @@
           </div>
           <div class="mb-3 text-start">
             <label for="editTaskDescription" class="form-label">Описание:</label>
-            <textarea class="form-control" id="editTaskDescription"></textarea>
+            <textarea class="form-control" id="editTaskDescription" name="description" rows="7"></textarea>
           </div>
           <div class="d-flex justify-content-start">
             <button type="submit" class="btn btn-primary">Сохранить изменения</button>

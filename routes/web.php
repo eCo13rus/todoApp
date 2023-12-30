@@ -18,25 +18,22 @@ use App\Http\Controllers\UserProfileController;
 |
 */
 
+Route::middleware('guest')->group(function () {
+    Route::get('login', function () {
+        return view('login.index');
+    })->name('login');
+
+    Route::get('register', function () {
+        return view('register.index');
+    })->name('register');
+});
+
 Route::get('/', [TaskController::class, 'index'])->name('home');
-
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('login', [LoginController::class, 'login'])->name('login');
-
 Route::post('register', [RegisterController::class, 'register'])->name('register');
-
-Route::get('login', function () {
-    return view('login.index');
-})->name('login');
-
-Route::get('register', function () {
-    return view('register.index');
-})->name('register');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/profile', [UserProfileController::class, 'show'])->name('profile.show');
-
 Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
-
 Route::post('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
-
 Route::resource('tasks', TaskController::class);

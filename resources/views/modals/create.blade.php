@@ -18,7 +18,7 @@
           </div>
           <div class="mb-3 text-start">
             <label for="taskDescription" class="form-label">Описание задачи:</label>
-            <textarea class="form-control" id="taskDescription" name="description" rows="3" required></textarea>
+            <textarea class="form-control" id="taskDescription" name="description" rows="5" required></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Добавить задачу</button>
         </form>
