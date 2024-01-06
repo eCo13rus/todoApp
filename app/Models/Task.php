@@ -13,8 +13,14 @@ class Task extends Model
 
     protected $appends = ['short_description'];
 
+    // Добавляем метод для связи с моделью User
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function getShortDescriptionAttribute()
     {
-        return mb_strimwidth($this->description, 0, 55, '...');   
+        return mb_strimwidth($this->description, 0, 120, '...');
     }
 }

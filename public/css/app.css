@@ -13,7 +13,7 @@
 /* Пагинация */
 #pagination {
   position: absolute;
-  bottom: 0;
+  bottom: 50px;
   left: 50%;
   transform: translateX(-50%);
   width: auto;
@@ -39,4 +39,31 @@
 body .alert-fixed-top {
   position: fixed;
   border-radius: 10px;
+}
+
+
+.task-creator {
+  font-size: 19px; /* Размер шрифта для имени создателя задачи */
+}
+
+.task-title {
+  font-size: 19px; /* Размер шрифта для заголовка задачи */
+}
+
+.task-description {
+  font-size: 18px; /* Размер шрифта для описания задачи */
+}
+
+
+/* Иконки footer */
+.social-links i {
+  font-size: 1.5em; /* Изменяет размер иконок */
+  color: black; /* Можно также изменить цвет */
+  transition: color 0.3s ease;
+}
+
+
+/* Стиль иконок при наведении */
+.social-links i:hover {
+  color: #979494;
 }

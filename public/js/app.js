@@ -2,15 +2,56 @@
 function createTaskCard(task) {
     return `
     <div class="col-md-3 text-start">
-      <div class="card mb-4 ms-4" style="width: 15rem; height: 200px" data-task-id="${task.id}">
+      <div class="card mb-5 ms-4" style="width: 20rem; height: 280px" data-task-id="${task.id}">
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><strong>Создал:</strong> ${task.name}</li>
-          <li class="list-group-item"><strong>Кому:</strong> ${task.title}</li>
-          <li class="list-group-item" data-full-description="${task.description}"><strong>Описание:</strong> ${task.short_description}</li>
+        <li class="list-group-item task-creator"><strong>Создал:</strong> ${task.name}</li>
+        <li class="list-group-item task-title"><strong>Кому:</strong> ${task.title}</li>
+        <li class="list-group-item task-description" data-full-description="${task.description}"><strong>Описание:</strong> ${task.short_description}</li>        
         </ul>
       </div>
     </div>`;
 }
+
+
+
+// Поиск задач
+// Функция для обновления отображения задач
+function updateTaskDisplay(searchText = '') {
+    $.ajax({
+        type: 'GET',
+        url: '/tasks',
+        data: { search: searchText },
+        success: function(response) {
+            // Очистка контейнера задач
+            $('#tasksContainer').empty();
+
+            // Обработка и добавление задач в контейнер
+            response.tasks.forEach(function(task) {
+                $('#tasksContainer').append(createTaskCard(task));
+            });
+
+            // Обновление пагинации
+            $('#pagination').html(response.pagination);
+        },
+        error: function(error) {
+            console.error('Ошибка при загрузке задач:', error);
+        }
+    });
+}
+
+$(document).ready(function() {
+    // Событие ввода для поля поиска
+    $('input[name="search"]').on('input', function() {
+        var searchText = $(this).val();
+        updateTaskDisplay(searchText);
+    });
+
+    // Загрузка начального списка задач
+    updateTaskDisplay();
+});
+
+
+
 
 // Пагинация
 function loadTasks(page = 1, callback = null) {
@@ -38,6 +79,8 @@ $(document).on("click", ".pagination a", function (event) {
     var page = $(this).attr("href").split("page=")[1];
     loadTasks(page);
 });
+
+
 
 // Добавление задачи
 $(document).ready(function () {
@@ -74,6 +117,8 @@ $(document).ready(function () {
     });
 });
 
+
+
 // Обработка отправки формы редактирования
 $(document).ready(function () {
     $("#editTaskForm").on("submit", function (e) {
@@ -109,6 +154,8 @@ $(document).ready(function () {
         });
     });
 });
+
+
 
 // Отправка запроса на удаление задачи
 var deleteTaskButton = document.getElementById("deleteTaskButton");
@@ -161,6 +208,8 @@ if (deleteTaskButton) {
     });
 }
 
+
+
 // Уведомление о входе
 document.addEventListener("DOMContentLoaded", function () {
     var alertPrimary = $(".alert-primary");
@@ -184,6 +233,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 1000);
     }, 4000); // через 4 секунды начинаем скрывать
 });
+
+
 
 // Обработка кликов
 $(document).ready(function () {
@@ -211,6 +262,8 @@ $(document).ready(function () {
         taskModal.show();
     });
 });
+
+
 
 // чтения данных из data-tasks
 document.addEventListener("DOMContentLoaded", function () {

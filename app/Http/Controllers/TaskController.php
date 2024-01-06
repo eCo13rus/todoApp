@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Log;
-
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -11,12 +9,20 @@ class TaskController extends Controller
 {
     public function index(Request $request)
     {
-        $tasks = Task::paginate(8);
+        // Построение запроса с учетом поиска
+        $query = Task::query();
+
+        if ($request->query('search') && $request->search != '') {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $tasks */
+        $tasks = $query->paginate(8);
 
         if ($request->ajax()) {
             return response()->json([
                 'tasks' => $tasks->items(),
-                'pagination' => $tasks->links()->toHtml(), // Отправляем HTML пагинации
+                'pagination' => $tasks->links()->toHtml(), // Возвращаем HTML для пагинации
             ]);
         } else {
             return view('home.index', compact('tasks'));
