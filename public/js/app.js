@@ -266,19 +266,19 @@ $(document).ready(function () {
 
 
 // чтения данных из data-tasks
-document.addEventListener("DOMContentLoaded", function () {
-    var tasksContainer = document.getElementById("tasksContainer");
+// document.addEventListener("DOMContentLoaded", function () {
+//     var tasksContainer = document.getElementById("tasksContainer");
 
-    if (tasksContainer) {
-        var tasksData = tasksContainer.getAttribute("data-tasks");
+//     if (tasksContainer) {
+//         var tasksData = tasksContainer.getAttribute("data-tasks");
 
-        if (tasksData) {
-            var tasks = JSON.parse(tasksData);
-            if (Array.isArray(tasks)) {
-                tasks.forEach(function (task) {
-                    $("#tasksContainer").append(createTaskCard(task));
-                });
-            }
-        }
-    }
-});
+//         if (tasksData) {
+//             var tasks = JSON.parse(tasksData);
+//             if (Array.isArray(tasks)) {
+//                 tasks.forEach(function (task) {
+//                     $("#tasksContainer").append(createTaskCard(task));
+//                 });
+//             }
+//         }
+//     }
+// });
