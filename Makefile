@@ -1,7 +1,7 @@
 install:
 	composer install
 
-generate key:
+generate-key:
 	php artisan key:generate
 
 migrate:
