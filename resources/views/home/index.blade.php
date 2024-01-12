@@ -18,7 +18,7 @@
 <div class="col-span-full d-flex justify-content-start ms-4 mt-4">
     <div class="d-flex" role="search">
         <h2>Задачи:</h2>
-        <input class="form-control me-2 ms-3" name="search" type="search" placeholder="Введите свое имя" aria-label="Поиск">
+        <input class="form-control me-2 ms-3" name="search" type="search" placeholder="Поиск адресата по имени" aria-label="Поиск">
     </div>
 </div>
 

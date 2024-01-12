@@ -67,3 +67,8 @@ body .alert-fixed-top {
 .social-links i:hover {
   color: #979494;
 }
+
+/* Telegram color */
+.social-links .telegram-icon {
+  color: #0088CC; /* Оригинальный синий цвет Telegram */
+}
