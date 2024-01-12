@@ -15,7 +15,7 @@
 
                     <div class="mb-3 text-start">
                         <label for="exampleInputEmail1" class="form-label">Адрес электронной почты</label>
-                        <input type="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Введите почту" value="{{ old('email') }}" autocomplete="off">
+                        <input type="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Введите почту" value="{{ old('email') }}">
                         @if ($errors->has('email'))
                         <div class="invalid-feedback">
                             {{ $errors->first('email') }}

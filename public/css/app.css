@@ -58,7 +58,6 @@ body .alert-fixed-top {
 /* Иконки footer */
 .social-links i {
   font-size: 1.5em; /* Изменяет размер иконок */
-  color: black; /* Можно также изменить цвет */
   transition: color 0.3s ease;
 }
 
@@ -68,7 +67,22 @@ body .alert-fixed-top {
   color: #979494;
 }
 
-/* Telegram color */
+
+/* Специфические цвета для каждой иконки */
+.social-links .fa-github {
+  color: black; /* Цвет для GitHub иконки */
+}
+
+
 .social-links .telegram-icon {
   color: #0088CC; /* Оригинальный синий цвет Telegram */
+}
+
+.social-links a {
+  text-decoration: none; /* Убирает подчеркивание */
+}
+
+/* Стиль для иконки внутри поля поиска */
+.fas.fa-search {
+  color: green; /* Цвет иконки */
 }

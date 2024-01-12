@@ -18,7 +18,7 @@ class RegisterController extends Controller
             'email.required' => 'Email обязателен для заполнения',
             'email.unique' => 'Такой email уже зарегистрирован.',
             'password.required' => 'Пароль обязателен для заполнения',
-            // Другие кастомные сообщения при необходимости
+            'password' => 'Пароль должен быть не менее 6 символов.',
         ];
 
         $request->validate([
