@@ -9,7 +9,7 @@ class Task extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'title', 'description', 'is_completed', 'user_id'];
+    protected $fillable = ['name', 'title', 'description', 'is_completed', 'user_id', 'priority'];
 
     protected $appends = ['short_description'];
 
@@ -17,6 +17,11 @@ class Task extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function getShortDescriptionAttribute()

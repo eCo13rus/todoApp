@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -37,3 +38,6 @@ Route::get('/profile', [UserProfileController::class, 'show'])->name('profile.sh
 Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
 Route::resource('tasks', TaskController::class);
+
+Route::post('/tasks/{task}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');

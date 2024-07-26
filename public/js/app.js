@@ -6,12 +6,12 @@ function createTaskCard(task) {
         <ul class="list-group list-group-flush">
         <li class="list-group-item task-creator"><strong>Создал:</strong> ${task.name}</li>
         <li class="list-group-item task-title"><strong>Кому:</strong> ${task.title}</li>
-        <li class="list-group-item task-description" data-full-description="${task.description}"><strong>Описание:</strong> ${task.short_description}</li>        
+        <li class="list-group-item task-description" data-full-description="${task.description}"><strong>Описание:</strong> ${task.short_description}</li>
+        <li class="list-group-item task-priority"><strong>Приоритет:</strong> ${task.priority}</li>
         </ul>
       </div>
     </div>`;
 }
-
 
 
 // Поиск задач
@@ -91,6 +91,7 @@ $(document).ready(function () {
         const creatorName = $("#creatorName").val();
         const taskName = $("#taskName").val();
         const taskDescription = $("#taskDescription").val();
+        const taskPriority = $("#taskPriority").val();
 
         // AJAX запрос
         $.ajax({
@@ -100,6 +101,7 @@ $(document).ready(function () {
                 name: creatorName,
                 title: taskName,
                 description: taskDescription,
+                priority: taskPriority,
                 _token: $('meta[name="csrf-token"]').attr("content"),
             },
             success: function (response) {
@@ -117,6 +119,55 @@ $(document).ready(function () {
     });
 });
 
+// Добавление комментария
+$("#addCommentForm").on("submit", function (e) {
+    e.preventDefault();
+    const taskId = $("#editTaskId").val();
+    const content = $("#commentContent").val();
+
+    $.ajax({
+        type: "POST",
+        url: `/tasks/${taskId}/comments`,
+        data: {
+            content: content,
+            _token: $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (comment) {
+            $("#commentsList").append(createCommentElement(comment));
+            $("#commentContent").val('');
+        },
+        error: function (xhr, status, error) {
+            console.error("Ошибка добавления комментария: " + error);
+        }
+    });
+});
+
+function createCommentElement(comment) {
+    return `
+    <div class="comment" data-comment-id="${comment.id}">
+      <p><strong>${comment.user.name}:</strong> ${comment.content}</p>
+      <button class="btn btn-sm btn-danger delete-comment">Удалить</button>
+    </div>`;
+}
+
+// Удаление комментария
+$(document).on("click", ".delete-comment", function () {
+    const commentId = $(this).closest('.comment').data('comment-id');
+
+    $.ajax({
+        type: "DELETE",
+        url: `/comments/${commentId}`,
+        data: {
+            _token: $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function () {
+            $(`[data-comment-id="${commentId}"]`).remove();
+        },
+        error: function (xhr, status, error) {
+            console.error("Ошибка удаления комментария: " + error);
+        }
+    });
+});
 
 
 // Обработка отправки формы редактирования
@@ -128,6 +179,7 @@ $(document).ready(function () {
         const taskName = $("#editTaskName").val();
         const taskTitle = $("#editTaskTitle").val();
         const taskDescription = $("#editTaskDescription").val();
+        const taskPriority = $("#editTaskPriority").val();
 
         // AJAX запрос для обновления задачи
         const taskElement = $(`[data-task-id="${taskId}"]`);
@@ -139,10 +191,12 @@ $(document).ready(function () {
                 name: taskName,
                 title: taskTitle,
                 description: taskDescription,
+                priority: taskPriority,
                 _token: $('meta[name="csrf-token"]').attr("content"),
             },
-
             success: function (task) {
+                // Обновляем карточку задачи на странице
+                const taskElement = $(`[data-task-id="${taskId}"]`);
                 taskElement.replaceWith(createTaskCard(task));
 
                 // Закрытие модального окна
@@ -236,31 +290,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-// Обработка кликов
-$(document).ready(function () {
-    $("#tasksContainer").on("click", ".card", function () {
-        const card = $(this);
-        const taskId = card.data("task-id");
-        const taskName = card
-            .find("li:nth-child(1)")
-            .text()
-            .replace("Создал: ", "");
-        const taskTitle = card
-            .find("li:nth-child(2)")
-            .text()
-            .replace("Кому: ", "");
-        const taskDescription = card
-            .find("li:nth-child(3)")
-            .data("full-description");
+// Обработка кликов по карточкам задач
+$("#tasksContainer").on("click", ".card", function () {
+    const card = $(this);
+    const taskId = card.data("task-id");
+    const taskName = card.find("li:nth-child(1)").text().replace("Создал: ", "");
+    const taskTitle = card.find("li:nth-child(2)").text().replace("Кому: ", "");
+    const taskDescription = card.find("li:nth-child(3)").data("full-description");
+    const taskPriority = card.find("li:nth-child(4)").text().replace("Приоритет: ", "");
 
-        $("#editTaskId").val(taskId);
-        $("#editTaskName").val(taskName);
-        $("#editTaskTitle").val(taskTitle);
-        $("#editTaskDescription").val(taskDescription);
+    $("#editTaskId").val(taskId);
+    $("#editTaskName").val(taskName);
+    $("#editTaskTitle").val(taskTitle);
+    $("#editTaskDescription").val(taskDescription);
+    $("#editTaskPriority").val(taskPriority);
 
-        const taskModal = new bootstrap.Modal($("#taskModal"));
-        taskModal.show();
-    });
+    const taskModal = new bootstrap.Modal($("#taskModal"));
+    taskModal.show();
 });
 
 

@@ -16,6 +16,11 @@ class TaskController extends Controller
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
+        // Добавляем фильтрацию по приоритету
+        if ($request->has('priority')) {
+            $query->where('priority', $request->priority);
+        }
+
         /** @var \Illuminate\Pagination\LengthAwarePaginator $tasks */
         $tasks = $query->paginate(8);
 
@@ -36,10 +41,14 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        $task = new Task();
-        $task->name = $request->name;
-        $task->title = $request->title;
-        $task->description = $request->description;
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'priority' => 'required|in:low,medium,high',
+        ]);
+
+        $task = new Task($validatedData);
         $task->user_id = auth()->id();
         $task->save();
 
@@ -48,7 +57,7 @@ class TaskController extends Controller
         return response()->json([
             'task' => $task,
             'totalTasks' => $totalTasks // Возвращаем общее количество задач
-        ]);
+        ], 201);
     }
 
     public function show(string $id)
@@ -64,10 +73,15 @@ class TaskController extends Controller
     public function update(Request $request, string $id)
     {
         $task = Task::findOrFail($id);
-        $task->name = $request->name;
-        $task->title = $request->title;
-        $task->description = $request->description;
-        $task->save();
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'priority' => 'required|in:low,medium,high',
+        ]);
+
+        $task->update($validatedData);
 
         return response()->json($task);
     }
@@ -77,6 +91,6 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
         $task->delete();
 
-        return response()->json($task);
+        return response()->json(['message' => 'Task deleted successfully']);
     }
 }

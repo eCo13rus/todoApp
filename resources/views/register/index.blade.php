@@ -9,12 +9,12 @@
                     @csrf
 
                     <div class="mb-3 text-start">
-                        <label for="inputName" class="form-label">Имя</label>
-                        <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="inputName" name="name" placeholder="Введите имя" value="{{ old('name') }}">
+                        <label for="inputName" class="form-label">Имя <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" id="inputName" name="name" placeholder="Введите имя" value="{{ old('name') }}" required>
                         @if ($errors->has('name'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('name') }}
-                        </div>
+                            <div class="invalid-feedback">
+                                {{ $errors->first('name') }}
+                            </div>
                         @endif
                     </div>
 
